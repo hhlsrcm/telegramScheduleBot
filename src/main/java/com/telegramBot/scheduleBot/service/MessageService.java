@@ -10,13 +10,15 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class MessageService {
     public SendMessage updateHandler(Update update) {
         var chatId = update.getMessage().getChatId();
+        var userName = update.getMessage().getFrom().getUserName();
         if (update.hasMessage() && update.getMessage().getText().equals("/start")) {
-            return SendMessage.builder().text("Привет, " + update.getMessage().getFrom().getUserName()).chatId(String.valueOf(chatId)).build();
-        } else if (update.getMessage().getText().startsWith("Faculty")) {
-            return null;
-        } else if (update.getMessage().getText().startsWith("Group")) {
+            return SendMessage.builder().text("Привет, " + userName).chatId(String.valueOf(chatId)).build();
+        } else if (update.getMessage().getText().startsWith("/schedule")) {
             return null;
         }
-        return null;
+        else {
+            return SendMessage.builder().text("Неизвестная команда").chatId(String.valueOf(chatId)).build();
+        }
     }
+
 }
