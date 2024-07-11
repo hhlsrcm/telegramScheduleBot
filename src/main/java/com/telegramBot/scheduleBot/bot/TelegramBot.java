@@ -2,6 +2,7 @@ package com.telegramBot.scheduleBot.bot;
 
 
 import com.telegramBot.scheduleBot.service.MessageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -14,6 +15,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Component
 @PropertySource("classpath:application.properties")
+@Slf4j
 public class TelegramBot extends TelegramLongPollingBot {
     @Autowired
     private MessageService messageService;
@@ -36,8 +38,10 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        var sendMessage = messageService.updateHandler(update);
-        sendAnswerMessage(sendMessage);
+        if (update.hasMessage() || update.hasCallbackQuery()) {
+            var sendMessage = messageService.updateHandler(update);
+            sendAnswerMessage(sendMessage);
+        }
     }
 
     private void sendAnswerMessage(SendMessage message) {
