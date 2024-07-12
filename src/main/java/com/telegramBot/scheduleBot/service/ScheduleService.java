@@ -1,11 +1,19 @@
 package com.telegramBot.scheduleBot.service;
 
+import com.telegramBot.scheduleBot.entity.Schedule;
+import com.telegramBot.scheduleBot.repository.ScheduleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+
+import java.util.List;
 
 @Service
 public class ScheduleService {
-    public SendMessage getSchedule(Long chatId){
-        return SendMessage.builder().text("расписание будет но не сегодня").chatId(String.valueOf(chatId)).build();
+    @Autowired
+    ScheduleRepository scheduleRepository;
+
+    public String getSchedule() {
+        List<Schedule> scheduleList = scheduleRepository.findAll();
+        return scheduleList.get(0).toString();
     }
 }

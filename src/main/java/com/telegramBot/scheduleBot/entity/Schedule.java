@@ -1,11 +1,18 @@
 package com.telegramBot.scheduleBot.entity;
 
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @NoArgsConstructor
-public class ScheduleItem {
+@Entity
+@Table(name = "schedule")
+public class Schedule {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String type;
     private String title;
     private String teacher;
